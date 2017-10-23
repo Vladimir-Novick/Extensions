@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Extentions
+namespace Extensions
 {
-    public static class ExtentionCopyTo
+    public static class ExtensionCopyTo
     {
         public static void CopyTo<T>(this T source, T distanation)
         {

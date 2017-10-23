@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Extentions
+namespace Extensions
 {
-    public static class ExtentionCuncurrentBug
+    public static class ExtensionCuncurrentBug
     {
         public static void AddRange<T>(this ConcurrentBag<T> @this, IEnumerable<T> toAdd)
         {
