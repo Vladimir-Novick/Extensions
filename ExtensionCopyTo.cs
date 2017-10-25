@@ -1,11 +1,22 @@
 ﻿using System;
+using System.Reflection;
 
-namespace Extensions
+namespace Data.Extensions
 {
+
+
     public static class ExtensionCopyTo
     {
+
+        /// <summary>
+        ///     Copy Child objects reference from source object to distanation object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="distanation"></param>
         public static void CopyTo<T>(this T source, T distanation)
         {
+           
             var properties = typeof(T).GetProperties();
             if (distanation != null)
             {
@@ -17,6 +28,13 @@ namespace Extensions
 
         }
 
+
+        /// <summary>
+        ///     Move Child objects reference from source object to distanation object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="distanation"></param>
         public static void MoveTo<T>(this T source, T distanation)
         {
             var properties = typeof(T).GetProperties();
@@ -25,14 +43,14 @@ namespace Extensions
 
                 foreach (var item in properties)
                 {
-                   
+
                     item.SetValue(distanation, item.GetValue(source));
-                    Object isBoxing = item.GetValue(source) as Object;
-                    if (isBoxing != null)
+                   
+                    if (!item.GetType().IsValueType )
                     {
-                        item.SetValue(source, null);
+                        item.SetValue(source, null); // Remove object reference from source object
                     }
-                    
+
 
                 }
             }

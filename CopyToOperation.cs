@@ -1,20 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
-namespace Data.Utils
+namespace Data.Operation
 {
     /// <summary>
     ///    Copy/Move Child objects reference from source object to distanation object
-    ///    
+    ///       multi-object operations
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class CopyToOperation<T>
     {
-        public PropertyInfo[] properties { private set; get; }
+
+        public class PropertyInfoData
+        {
+            public PropertyInfo Info { get; set;  }
+            public bool IsValueType { get; set; }
+        }
+
+        public List<PropertyInfoData> properties {  set; get; }
 
         public CopyToOperation()
         {
-            properties = typeof(T).GetProperties();
+            properties = new List<PropertyInfoData>();
+            PropertyInfo[] prop = typeof(T).GetProperties();
+            foreach (var info in prop)
+            {
+                PropertyInfoData infoData = new PropertyInfoData()
+                {
+                    Info = info,
+                    IsValueType = info.GetType().IsValueType
+                };
+                properties.Add(infoData);
+            }
         }
 
         /// <summary>
@@ -30,7 +48,7 @@ namespace Data.Utils
             {
                 foreach (var item in properties)
                 {
-                    item.SetValue(distanation, item.GetValue(source));
+                    item.Info.SetValue(distanation, item.Info.GetValue(source));
                 }
             }
 
@@ -38,7 +56,7 @@ namespace Data.Utils
 
 
         /// <summary>
-        ///     Move Child objects from source object to distanation object
+        ///     Move Child objects reference from source object to distanation object
         /// </summary>
         /// <param name="source"></param>
         /// <param name="distanation"></param>
@@ -51,11 +69,11 @@ namespace Data.Utils
                 foreach (var item in properties)
                 {
 
-                    item.SetValue(distanation, item.GetValue(source));
-                    Object isBoxing = item.GetValue(source) as Object;
-                    if (isBoxing != null)
+                    item.Info.SetValue(distanation, item.Info.GetValue(source));
+
+                    if ( !item.IsValueType)
                     {
-                        item.SetValue(source, null);
+                        item.Info.SetValue(source, null);
                     }
 
 
