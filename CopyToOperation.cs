@@ -18,11 +18,11 @@ namespace Data.Operation
             public bool IsValueType { get; set; }
         }
 
-        public List<PropertyInfoData> properties {  set; get; }
+        public List<PropertyInfoData> Properties {  set; get; }
 
         public CopyToOperation()
         {
-            properties = new List<PropertyInfoData>();
+            Properties = new List<PropertyInfoData>();
             PropertyInfo[] prop = typeof(T).GetProperties();
             foreach (var info in prop)
             {
@@ -31,7 +31,7 @@ namespace Data.Operation
                     Info = info,
                     IsValueType = info.GetType().IsValueType
                 };
-                properties.Add(infoData);
+                Properties.Add(infoData);
             }
         }
 
@@ -46,7 +46,7 @@ namespace Data.Operation
         
             if (distanation != null)
             {
-                foreach (var item in properties)
+                foreach (var item in Properties)
                 {
                     item.Info.SetValue(distanation, item.Info.GetValue(source));
                 }
@@ -66,7 +66,7 @@ namespace Data.Operation
             if (distanation != null)
             {
 
-                foreach (var item in properties)
+                foreach (var item in Properties)
                 {
 
                     item.Info.SetValue(distanation, item.Info.GetValue(source));
